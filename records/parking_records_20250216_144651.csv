@@ -1,0 +1,13 @@
+Token Number,Student Name,Department,Semester,Vehicle Number,Vehicle Type,Entry Time,Exit Time,Status
+"UETG0001","a","CS","1","2762","Motorcycle","undefined","","undefined"
+"UETG0002","s","Software","1","2760","Bicycle","undefined","","undefined"
+"UETG0003","khan","CS","1","888","Car","16/02/2025, 1:44:32 pm","","Active"
+"UETG0004","s","Software","1","2760","Bicycle","undefined","","undefined"
+"UETG0005","a","CS","1","2762","Motorcycle","undefined","","undefined"
+"UETG0006","o","Software","3","909","Motorcycle","undefined","","undefined"
+"UETG0007","i","Natural","7","676","Car","undefined","","undefined"
+"UETG0008","i","Natural","7","676","Car","undefined","","undefined"
+"UETG0009","i","Natural","7","676","Car","undefined","","undefined"
+"UETG0010","b","CS","1","123","Car","undefined","","undefined"
+"UETG0011","o","Software","7","000","Car","undefined","16/02/2025, 2:43:36 pm","Outside"
+"UETG0012","p","CS","8","000","Car","undefined","16/02/2025, 2:44:56 pm","Outside"
