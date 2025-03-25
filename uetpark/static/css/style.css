@@ -1,0 +1,129 @@
+body {
+    background: linear-gradient(45deg, #1a2a6c, #b21f1f, #fdbb2d);
+    background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    min-height: 100vh;
+    font-family: 'Roboto', sans-serif;
+    position: relative;
+}
+
+@keyframes gradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.navbar {
+    background: linear-gradient(135deg, #90EE90, #98FB98) !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: #003366 !important;
+    font-weight: 500;
+}
+
+.navbar-logo {
+    height: 35px;
+    margin-right: 10px;
+}
+
+.nav-link {
+    color: #003366 !important;
+    transition: all 0.3s;
+}
+
+.nav-link:hover {
+    color: #002244 !important;
+    transform: translateY(-1px);
+}
+
+.container {
+    padding-top: 2rem;
+}
+
+.card {
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    border: none;
+    border-radius: 10px;
+    background-color: rgba(255, 255, 255, 0.95);
+    transition: transform 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.table {
+    background-color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead th {
+    background: linear-gradient(135deg, #90EE90, #98FB98);
+    color: #003366;
+    border-bottom: none;
+    padding: 12px;
+}
+
+.table tbody tr:nth-child(even) {
+    background-color: rgba(144, 238, 144, 0.1);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #90EE90, #98FB98);
+    border: none;
+    transition: all 0.3s;
+    color: #003366;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #98FB98, #90EE90);
+    transform: translateY(-2px);
+    color: #003366;
+}
+
+/* Camera styles */
+.camera-container {
+    position: relative;
+    margin-bottom: 1rem;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #f8f9fa;
+}
+
+#video, #captured-image {
+    width: 100%;
+    max-height: 400px;
+    object-fit: cover;
+}
+
+.camera-controls {
+    position: absolute;
+    bottom: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 100;
+}
+
+/* Footer Styles */
+.footer {
+    width: 100%;
+    background: linear-gradient(135deg, #90EE90, #98FB98);
+    color: #003366;
+    text-align: center;
+    padding: 5px 0;
+    font-size: 0.8rem;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.1);
+    margin-top: 2rem;
+} 

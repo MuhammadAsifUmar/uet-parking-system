@@ -1,0 +1,150 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card">
+    <div class="card-body">
+        <h2 class="card-title mb-4">New Vehicle Entry</h2>
+        <form method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Student Name</label>
+                        {{ form.student_name(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Department</label>
+                        {{ form.department(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Semester</label>
+                        {{ form.semester(class="form-control") }}
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="mb-3">
+                        <label class="form-label">Vehicle Number</label>
+                        {{ form.vehicle_number(class="form-control") }}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Vehicle Type</label>
+                        {{ form.vehicle_type(class="form-control") }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="mb-4">
+                <label class="form-label">Vehicle Photo</label>
+                <div class="camera-container">
+                    <video id="video" class="img-fluid rounded" autoplay playsinline></video>
+                    <canvas id="canvas" class="img-fluid rounded" style="display: none;"></canvas>
+                    <img id="captured-image" class="img-fluid rounded" style="display: none;">
+                    <input type="hidden" name="image_data" id="image_data">
+                    
+                    <div class="camera-controls">
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-success" id="capturePhoto">
+                                <i class="fas fa-camera"></i> Capture
+                            </button>
+                            <button type="button" class="btn btn-warning" id="retakePhoto" style="display: none;">
+                                <i class="fas fa-redo"></i> Retake
+                            </button>
+                            <button type="button" class="btn btn-info" id="switchCamera">
+                                <i class="fas fa-sync"></i> Switch Camera
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-save"></i> Submit Entry
+            </button>
+        </form>
+    </div>
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+let video = document.getElementById('video');
+let canvas = document.getElementById('canvas');
+let capturedImage = document.getElementById('captured-image');
+let captureButton = document.getElementById('capturePhoto');
+let retakeButton = document.getElementById('retakePhoto');
+let switchButton = document.getElementById('switchCamera');
+let stream = null;
+let facingMode = 'environment'; // Start with back camera
+
+async function startCamera() {
+    try {
+        if (stream) {
+            stream.getTracks().forEach(track => track.stop());
+        }
+
+        const constraints = {
+            video: {
+                facingMode: facingMode,
+                width: { ideal: 1280 },
+                height: { ideal: 720 }
+            }
+        };
+
+        stream = await navigator.mediaDevices.getUserMedia(constraints);
+        video.srcObject = stream;
+        video.style.display = 'block';
+        capturedImage.style.display = 'none';
+        captureButton.style.display = 'inline-block';
+        retakeButton.style.display = 'none';
+    } catch (err) {
+        console.error('Error accessing camera:', err);
+        alert('Error accessing camera. Please make sure you have granted camera permissions.');
+    }
+}
+
+function capturePhoto() {
+    canvas.width = video.videoWidth;
+    canvas.height = video.videoHeight;
+    canvas.getContext('2d').drawImage(video, 0, 0);
+    
+    // Display captured image
+    capturedImage.src = canvas.toDataURL('image/jpeg');
+    document.getElementById('image_data').value = capturedImage.src;
+    
+    // Show/hide elements
+    video.style.display = 'none';
+    capturedImage.style.display = 'block';
+    captureButton.style.display = 'none';
+    retakeButton.style.display = 'inline-block';
+    
+    // Stop camera stream
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+}
+
+function switchCameraFacing() {
+    facingMode = facingMode === 'environment' ? 'user' : 'environment';
+    startCamera();
+}
+
+// Event listeners
+captureButton.addEventListener('click', capturePhoto);
+retakeButton.addEventListener('click', () => {
+    retakeButton.style.display = 'none';
+    startCamera();
+});
+switchButton.addEventListener('click', switchCameraFacing);
+
+// Start camera automatically when page loads
+document.addEventListener('DOMContentLoaded', startCamera);
+
+// Clean up on page unload
+window.addEventListener('beforeunload', () => {
+    if (stream) {
+        stream.getTracks().forEach(track => track.stop());
+    }
+});
+</script>
+{% endblock %} 

@@ -1,0 +1,153 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card stat-card h-100">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-parking me-2"></i>Vehicles Inside
+                    </h5>
+                    <span class="badge bg-primary fs-5">{{ vehicles_inside }}</span>
+                </div>
+                <div class="row g-3">
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-motorcycle fa-2x text-primary me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Motorcycles</small>
+                                    <span class="fs-5 fw-bold">{{ stats.motorcycles }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="p-3 bg-light rounded">
+                            <div class="d-flex align-items-center">
+                                <i class="fas fa-car fa-2x text-success me-2"></i>
+                                <div>
+                                    <small class="text-muted d-block">Cars</small>
+                                    <span class="fs-5 fw-bold">{{ stats.cars }}</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title mb-4">
+                    <i class="fas fa-chart-pie me-2"></i>Vehicles by Department
+                </h5>
+                <div class="row g-3">
+                    {% for dept, count in stats.by_department.items() %}
+                    <div class="col-md-4">
+                        <div class="p-3 bg-light rounded">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <small class="text-muted d-block">{{ dept }}</small>
+                                    <span class="fs-5 fw-bold">{{ count }}</span>
+                                </div>
+                                <div class="text-end">
+                                    {% if count > 0 %}
+                                    <div class="progress" style="width: 60px; height: 6px;">
+                                        <div class="progress-bar bg-primary" 
+                                             role="progressbar" 
+                                             style="width: {{ (count / vehicles_inside * 100) if vehicles_inside > 0 else 0 }}%">
+                                        </div>
+                                    </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-4">
+                    <h5 class="card-title mb-0">
+                        <i class="fas fa-history me-2"></i>Recent Entries
+                    </h5>
+                    <div>
+                        <a href="{{ url_for('new_entry') }}" class="btn btn-primary">
+                            <i class="fas fa-plus-circle me-1"></i>New Entry
+                        </a>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Token</th>
+                                <th>Student Name</th>
+                                <th>Department</th>
+                                <th>Vehicle Number</th>
+                                <th>Vehicle Type</th>
+                                <th>Entry Time</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for entry in recent_entries %}
+                            <tr>
+                                <td>
+                                    <span class="badge bg-primary">{{ entry.token }}</span>
+                                </td>
+                                <td>{{ entry.student_name }}</td>
+                                <td>{{ entry.department }}</td>
+                                <td>{{ entry.vehicle_number }}</td>
+                                <td>
+                                    {% if entry.vehicle_type == 'Motorcycle' %}
+                                    <i class="fas fa-motorcycle text-primary"></i>
+                                    {% else %}
+                                    <i class="fas fa-car text-success"></i>
+                                    {% endif %}
+                                    {{ entry.vehicle_type }}
+                                </td>
+                                <td>{{ entry.entry_time.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                                <td>
+                                    {% if entry.exit_time %}
+                                    <span class="badge bg-secondary">Exited</span>
+                                    {% else %}
+                                    <span class="badge bg-success">Inside</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if not entry.exit_time %}
+                                    <a href="{{ url_for('exit_verification') }}?search_query={{ entry.token }}" 
+                                       class="btn btn-sm btn-outline-primary">
+                                        <i class="fas fa-check-circle"></i>
+                                    </a>
+                                    {% endif %}
+                                    {% if entry.image_path %}
+                                    <button type="button" 
+                                            class="btn btn-sm btn-outline-secondary"
+                                            onclick="window.open('{{ url_for('static', filename='images/' + entry.image_path) }}')">
+                                        <i class="fas fa-image"></i>
+                                    </button>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 
